@@ -32,8 +32,15 @@ class TextRenderer:
                  box_border: Optional[str] = None,
                  box_border_width: int = 3,
                  box_padding: int = 30,
-                 box_radius: int = 20) -> Optional[int]:
+                 box_radius: int = 20,
+                 avoid_rect: Optional[Tuple[int, int, int, int]] = None,
+                 logo_gap: int = 30,
+                 logo_avoid_min_ratio: float = 0.4) -> Optional[int]:
         """Draw text with automatic sizing, wrapping, and optional shadow and box.
+        avoid_rect: (x1, y1, x2, y2) zone (e.g. logo bbox) the text area must not overlap.
+        logo_gap: pixels of breathing room kept between avoid_rect and the text area.
+        logo_avoid_min_ratio: minimum text-area width (as a ratio of image width) allowed
+        when dodging avoid_rect; below this, avoidance is skipped and full width is used.
         Returns the bottom y coordinate of the drawn element."""
 
         if not text:
@@ -43,10 +50,16 @@ class TextRenderer:
             font_size = self.DEFAULT_FONT_SIZES.get(text_type, 60)
 
         font = self._load_font(font_path, font_size, text_type)
-        max_width = int(self.image_width * max_width_ratio)
+
+        avail_x1, avail_x2 = self._get_available_x_range(
+            text_type, position, y_start, avoid_rect, logo_gap, logo_avoid_min_ratio
+        )
+        avail_width = avail_x2 - avail_x1
+
+        max_width = min(int(self.image_width * max_width_ratio), avail_width)
 
         if box:
-            max_width = int(self.image_width * max_width_ratio) - (box_padding * 2)
+            max_width = min(int(self.image_width * max_width_ratio), avail_width) - (box_padding * 2)
 
         # Intelligent sizing: try single line first, wrap only if font would shrink too much
         if text_type != "footer":
@@ -78,10 +91,12 @@ class TextRenderer:
         max_line_width = max(line_widths)
 
         if len(lines) == 1:
-            x, y = self._calculate_position(position, line_widths[0], line_heights[0], text_type, y_start)
+            x, y = self._calculate_position(position, line_widths[0], line_heights[0], text_type, y_start,
+                                            avail_x1, avail_x2)
         else:
-            x = (self.image_width - max_line_width) // 2
-            _, y = self._calculate_position(position, max_line_width, total_height, text_type, y_start)
+            x = avail_x1 + (avail_width - max_line_width) // 2
+            _, y = self._calculate_position(position, max_line_width, total_height, text_type, y_start,
+                                            avail_x1, avail_x2)
 
         # Ensure a visible gap between stacked elements when both have boxes
         if box and y_start is not None:
@@ -110,7 +125,7 @@ class TextRenderer:
 
                 cur_y = y
                 for i, line in enumerate(lines):
-                    lx = (self.image_width - line_widths[i]) // 2 if len(lines) > 1 else x
+                    lx = avail_x1 + (avail_width - line_widths[i]) // 2 if len(lines) > 1 else x
                     overlay_draw.text((lx, cur_y), line, font=font, fill=color)
                     cur_y += line_heights[i] + line_spacing
 
@@ -127,14 +142,14 @@ class TextRenderer:
                 )
                 cur_y = y
                 for i, line in enumerate(lines):
-                    lx = (self.image_width - line_widths[i]) // 2 if len(lines) > 1 else x
+                    lx = avail_x1 + (avail_width - line_widths[i]) // 2 if len(lines) > 1 else x
                     self.draw.text((lx, cur_y), line, font=font, fill=color)
                     cur_y += line_heights[i] + line_spacing
         else:
             shadow_offset = max(2, font_size // 40)
             cur_y = y
             for i, line in enumerate(lines):
-                lx = (self.image_width - line_widths[i]) // 2 if len(lines) > 1 else x
+                lx = avail_x1 + (avail_width - line_widths[i]) // 2 if len(lines) > 1 else x
                 if shadow:
                     self.draw.text(
                         (lx + shadow_offset, cur_y + shadow_offset),
@@ -262,17 +277,71 @@ class TextRenderer:
 
         return lines if lines else [text]
 
+    def _get_available_x_range(self, text_type: str, position: str,
+                              y_start: Optional[int] = None,
+                              avoid_rect: Optional[Tuple[int, int, int, int]] = None,
+                              gap: int = 30,
+                              min_ratio: float = 0.4) -> Tuple[int, int]:
+        """Return (x1, x2) horizontal range the text is allowed to occupy,
+        narrowed to dodge avoid_rect (e.g. a logo) when their vertical zones overlap."""
+        x1, x2 = 0, self.image_width
+
+        if not avoid_rect:
+            return x1, x2
+
+        rect_x1, rect_y1, rect_x2, rect_y2 = avoid_rect
+
+        zone_top, zone_bottom = self._get_zone_bounds(text_type, position, y_start)
+
+        # Only reserve space if the text's vertical zone actually overlaps the logo's
+        if zone_bottom < rect_y1 or zone_top > rect_y2:
+            return x1, x2
+
+        # Logo on the left half -> push text area right; on the right half -> push left
+        if rect_x1 < self.image_width - rect_x2:
+            x1 = rect_x2 + gap
+        else:
+            x2 = rect_x1 - gap
+
+        if x2 - x1 < self.image_width * min_ratio:
+            # Avoiding would leave too little room; fall back to full width
+            return 0, self.image_width
+
+        return x1, x2
+
+    def _get_zone_bounds(self, text_type: str, position: str,
+                         y_start: Optional[int] = None) -> Tuple[int, int]:
+        """Approximate vertical (top, bottom) pixel bounds a text block will occupy."""
+        if text_type == "footer":
+            return int(self.image_height * 0.90), self.image_height
+
+        if position in ("north", "top"):
+            return 0, int(self.image_height * 0.35)
+        elif position in ("center", "middle"):
+            top = y_start if y_start is not None else int(self.image_height * 0.30)
+            return top, int(self.image_height * 0.90)
+        elif position in ("south", "bottom"):
+            return int(self.image_height * 0.75), self.image_height
+
+        return 0, self.image_height
+
     def _calculate_position(self, position: str,
                            text_width: int, text_height: int,
                            text_type: str = "title",
-                           y_start: Optional[int] = None) -> Tuple[int, int]:
+                           y_start: Optional[int] = None,
+                           avail_x1: int = 0,
+                           avail_x2: Optional[int] = None) -> Tuple[int, int]:
         """Calculate x, y coordinates based on position string"""
 
+        if avail_x2 is None:
+            avail_x2 = self.image_width
+
         if text_type == "footer":
-            x = self.image_width - text_width - 40
+            x = avail_x2 - text_width - 40
+            x = max(x, avail_x1 + 10)
             y = self.image_height - text_height - 30
         else:
-            x = (self.image_width - text_width) // 2
+            x = avail_x1 + (avail_x2 - avail_x1 - text_width) // 2
 
             if position == "north" or position == "top":
                 y = int(self.image_height * 0.08)

@@ -64,10 +64,10 @@ class CoverGenerator:
         self.draw = ImageDraw.Draw(self.image)
 
     def add_logo(self, logo_path: str, size: int = 100,
-                position: str = "top-right") -> None:
-        """Add logo to the image"""
+                position: str = "top-right") -> Optional[Tuple[int, int, int, int]]:
+        """Add logo to the image. Returns (x1, y1, x2, y2) bounding box or None."""
         if not os.path.exists(logo_path):
-            return
+            return None
 
         logo = Image.open(logo_path)
         logo.thumbnail((size, size), Image.Resampling.LANCZOS)
@@ -84,12 +84,14 @@ class CoverGenerator:
             pos = (self.width - logo.width - margin,
                   self.height - logo.height - margin)
         elif position == "bottom-left":
-            pos = (margin - 40, self.height - logo.height - margin + 50)
+            pos = (margin, self.height - logo.height - margin)
         else:
             pos = (self.width - logo.width - margin, margin)
 
         self.image.paste(logo, pos, logo)
         self.draw = ImageDraw.Draw(self.image)
+
+        return (pos[0], pos[1], pos[0] + logo.width, pos[1] + logo.height)
 
     def save(self, output_path: str) -> None:
         """Save the generated image"""

@@ -6,8 +6,8 @@
 # - Logo in assets/logos/
 
 python autocover.py \
-  --title "Morph.nvim" \
-  --subtitle "React-like renderer para Neovim" \
+  --title "Auth Bypass" \
+  --subtitle "asi entro un minero a mi servidor" \
   --footer "https://cuevaneander.tech/blog" \
   --font assets/fonts/Prehistoric-Caveman.ttf \
   --background assets/backgrounds/bg.png \
@@ -21,6 +21,8 @@ python autocover.py \
   --box-border-width 4 \
   --box-padding 30 \
   --box-radius 55 \
-  --output morph-nvim-react-like-renderer-para-neovim.webp
+  --max-width-ratio 1.17 \
+  --logo-gap 6 \
+--output auth-bypass-asi-entro-un-minero-a-mi-servidor.webp
 
 echo "Cover generated successfully"

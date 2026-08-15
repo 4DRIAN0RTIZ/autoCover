@@ -64,6 +64,13 @@ Examples:
                        help="Max lines for subtitle before wrapping (default: 3)")
     parser.add_argument("--no-shadow", action="store_true",
                        help="Disable text shadow")
+    parser.add_argument("--max-width-ratio", type=float, default=0.9,
+                       help="Max text area width as ratio of image width (default: 0.9)")
+    parser.add_argument("--logo-gap", type=int, default=30,
+                       help="Gap in pixels between logo and text area when avoiding overlap (default: 30)")
+    parser.add_argument("--logo-avoid-min-ratio", type=float, default=0.4,
+                       help="Minimum allowed text area width (as ratio of image width) when dodging the logo, "
+                            "below which avoidance is skipped (default: 0.4)")
 
     parser.add_argument("--box", action="store_true",
                        help="Enable text boxes with rounded borders")
@@ -122,11 +129,12 @@ def main():
         else:
             generator.create_base(args.bg_color)
 
+        logo_rect = None
         if args.logo:
             if not os.path.exists(args.logo):
                 print(f"Warning: Logo file not found: {args.logo}")
             else:
-                generator.add_logo(args.logo, args.logo_size, args.logo_position)
+                logo_rect = generator.add_logo(args.logo, args.logo_size, args.logo_position)
 
         renderer = TextRenderer(generator.draw, generator.width, generator.height, generator.image)
 
@@ -146,7 +154,11 @@ def main():
                              box_border=args.box_border if args.box else None,
                              box_border_width=args.box_border_width,
                              box_padding=args.box_padding,
-                             box_radius=args.box_radius)
+                             box_radius=args.box_radius,
+                             avoid_rect=logo_rect,
+                             max_width_ratio=args.max_width_ratio,
+                             logo_gap=args.logo_gap,
+                             logo_avoid_min_ratio=args.logo_avoid_min_ratio)
 
         if args.subtitle:
             renderer.draw_text(args.subtitle, "center",
@@ -162,7 +174,11 @@ def main():
                              box_border=args.box_border if args.box else None,
                              box_border_width=args.box_border_width,
                              box_padding=args.box_padding,
-                             box_radius=args.box_radius)
+                             box_radius=args.box_radius,
+                             avoid_rect=logo_rect,
+                             max_width_ratio=args.max_width_ratio,
+                             logo_gap=args.logo_gap,
+                             logo_avoid_min_ratio=args.logo_avoid_min_ratio)
 
         if args.footer:
             renderer.draw_text(args.footer, "south",
@@ -176,7 +192,11 @@ def main():
                              box_border=args.box_border if args.box else None,
                              box_border_width=args.box_border_width,
                              box_padding=args.box_padding,
-                             box_radius=args.box_radius)
+                             box_radius=args.box_radius,
+                             avoid_rect=logo_rect,
+                             max_width_ratio=args.max_width_ratio,
+                             logo_gap=args.logo_gap,
+                             logo_avoid_min_ratio=args.logo_avoid_min_ratio)
 
         generator.save(args.output)
         print(f"Cover image generated: {args.output}")
