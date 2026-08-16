@@ -1,0 +1,15 @@
+*.pyc
+__pycache__/
+*.png
+*.jpg
+*.jpeg
+!assets/**/*.png
+!assets/**/*.jpg
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+.atl/
+.pytest_cache/
+.ruff_cache/

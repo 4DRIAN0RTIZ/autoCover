@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>autoCover — Blog cover images from the terminal</title>
+	<meta name="description"
+		content="Generate blog cover (OG) images from the command line: solid/gradient/image backgrounds, rounded text boxes, logo placement, custom fonts, PNG/WebP/JPG output." />
+
+	<!-- Open Graph / Social Media -->
+	<!-- No dedicated docs domain or og-image yet: adjust these once GitHub Pages / a custom domain is configured -->
+	<meta property="og:title" content="autoCover — Blog cover images from the terminal" />
+	<meta property="og:description"
+		content="Generate blog cover (OG) images from the command line: solid/gradient/image backgrounds, rounded text boxes, logo placement, custom fonts." />
+	<meta property="og:url" content="https://github.com/4DRIAN0RTIZ/autoCover" />
+	<meta property="og:type" content="website" />
+	<meta property="og:locale" content="en_US" />
+
+	<!-- Twitter -->
+	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:title" content="autoCover — Blog cover images from the terminal" />
+	<meta name="twitter:description"
+		content="Generate blog cover (OG) images from the command line: solid/gradient/image backgrounds, rounded text boxes, logo placement, custom fonts." />
+
+	<!-- No favicon shipped in assets/ yet; omitted rather than borrowing another project's icon -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+	<link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+
+	<!-- ══════════════════════════════ NAV ══════════════════════════════ -->
+	<nav>
+		<a href="#" class="nav-brand">{ <span>auto</span>Cover }</a>
+		<ul class="nav-links">
+			<li><a href="#features">Features</a></li>
+			<li><a href="#installation">Installation</a></li>
+			<li><a href="#usage">Usage</a></li>
+			<li><a href="#options">Options</a></li>
+			<li><a href="#changelog">Changelog</a></li>
+			<li>
+				<a href="https://github.com/4DRIAN0RTIZ/autoCover" target="_blank" rel="noopener" class="nav-gh">
+					<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+						<path
+							d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12" />
+					</svg>
+					<span>GitHub</span>
+				</a>
+			</li>
+		</ul>
+	</nav>
+
+	<!-- ══════════════════════════════ HERO ══════════════════════════════ -->
+	<div class="hero">
+		<div class="hero-badge" id="hero-badge-release"></div>
+
+		<h1>
+			Cover images,<br />
+			<span class="accent">from the terminal</span><span class="dim">,</span><br />
+			exactly as you script them.
+		</h1>
+
+		<p class="hero-sub">
+			autoCover is a Python CLI that generates blog cover (OG) images from the command line —
+			solid, gradient, or image backgrounds, rounded text boxes, logo placement, and custom fonts,
+			without opening a design tool.
+		</p>
+
+		<div class="hero-actions">
+			<a href="#installation" class="btn btn-primary">
+				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+					<polyline points="8 17 12 21 16 17" />
+					<line x1="12" y1="12" x2="12" y2="21" />
+					<path d="M20.88 18.09A5 5 0 0018 9h-1.26A8 8 0 103 16.29" />
+				</svg>
+				<span>Install</span>
+			</a>
+			<a href="https://github.com/4DRIAN0RTIZ/autoCover" target="_blank" rel="noopener" class="btn btn-secondary">
+				<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+					<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+					<polyline points="14 2 14 8 20 8" />
+					<line x1="16" y1="13" x2="8" y2="13" />
+					<line x1="16" y1="17" x2="8" y2="17" />
+					<polyline points="10 9 9 9 8 9" />
+				</svg>
+				<span>View source</span>
+			</a>
+		</div>
+
+		<!-- Terminal demo -->
+		<div class="terminal-wrap">
+			<div class="terminal">
+				<div class="terminal-bar">
+					<div class="dot dot-red"></div>
+					<div class="dot dot-yellow"></div>
+					<div class="dot dot-green"></div>
+					<span class="terminal-title">autocover — zsh</span>
+				</div>
+				<div class="terminal-body">
+					<div><span class="t-prompt">❯</span> <span class="t-cmd">autocover</span> \</div>
+					<div>&nbsp;&nbsp;<span class="t-flag">--title</span> <span class="t-str">"NOMADA DIGITAL"</span> \</div>
+					<div>&nbsp;&nbsp;<span class="t-flag">--subtitle</span> <span class="t-str">"LLEVA TU HOME A TODAS PARTES"</span> \</div>
+					<div>&nbsp;&nbsp;<span class="t-flag">--gradient</span> <span class="t-str">"#111111,#ff7f00"</span> \</div>
+					<div>&nbsp;&nbsp;<span class="t-flag">--box</span> <span class="t-flag">--box-border</span> <span class="t-str">"#ff7f00"</span> \</div>
+					<div>&nbsp;&nbsp;<span class="t-flag">--output</span> <span class="t-str">cover.webp</span></div>
+					<div><span class="t-out">Rendering 1280x720 cover…</span></div>
+					<div><span class="t-success">✓ Written to cover.webp</span></div>
+					<div><span class="t-prompt">❯</span> <span class="t-cursor"></span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<hr class="divider" />
+
+	<!-- ══════════════════════════════ FEATURES ══════════════════════════════ -->
+	<section id="features">
+		<div class="section-label">// features</div>
+		<h2>Everything a cover image needs, one command</h2>
+		<p>No design tool, no browser. autoCover renders a finished PNG/WebP/JPG straight from your shell or CI
+			pipeline.</p>
+
+		<div class="features-grid">
+			<div class="feature-card">
+				<span class="feature-icon" aria-hidden="true"><i class="fa-solid fa-fill-drip"></i></span>
+				<h3>Flexible backgrounds</h3>
+				<p>Solid color, linear gradient (vertical or horizontal), or a background image with an adjustable
+					color overlay.</p>
+			</div>
+			<div class="feature-card">
+				<span class="feature-icon" aria-hidden="true"><i class="fa-solid fa-vector-square"></i></span>
+				<h3>Rounded text boxes</h3>
+				<p>Optional boxes behind title/subtitle/footer with fill, border color, border width, padding, and
+					corner radius, all configurable.</p>
+			</div>
+			<div class="feature-card">
+				<span class="feature-icon" aria-hidden="true"><i class="fa-solid fa-image"></i></span>
+				<h3>Logo placement</h3>
+				<p>Drop a logo in any of the four corners with configurable size via <code>--logo-position</code> and
+					<code>--logo-size</code>.</p>
+			</div>
+			<div class="feature-card">
+				<span class="feature-icon" aria-hidden="true"><i class="fa-solid fa-font"></i></span>
+				<h3>Custom fonts</h3>
+				<p>Point <code>--font</code> at any TTF/OTF file. Falls back to a system font when omitted, with
+					auto-sized or fixed title/subtitle/footer sizes.</p>
+			</div>
+			<div class="feature-card">
+				<span class="feature-icon" aria-hidden="true"><i class="fa-solid fa-layer-group"></i></span>
+				<h3>Text wrapping and shadow</h3>
+				<p>Configurable max lines per field before wrapping, plus an automatic text shadow you can disable
+					with <code>--no-shadow</code>.</p>
+			</div>
+			<div class="feature-card">
+				<span class="feature-icon" aria-hidden="true"><i class="fa-solid fa-terminal"></i></span>
+				<h3>Scriptable output</h3>
+				<p>Every option is a CLI flag — export PNG, WebP, or JPG at any resolution, and wire it into build
+					scripts or CI to generate covers automatically.</p>
+			</div>
+		</div>
+	</section>
+
+	<hr class="divider" />
+
+	<!-- ══════════════════════════════ INSTALLATION ══════════════════════════════ -->
+	<section id="installation">
+		<div class="section-label">// installation</div>
+		<h2>Install from source</h2>
+		<p>autoCover isn't published on PyPI yet — install it straight from the GitHub repository.</p>
+
+		<div class="steps">
+			<div class="step">
+				<div class="step-num">01</div>
+				<div class="step-content">
+					<h3>Clone the repository</h3>
+					<p>Requires Python 3.9+.</p>
+					<div class="code-block">
+						<div class="code-header">
+							<span class="code-lang">bash</span>
+							<span>terminal</span>
+						</div>
+						<div class="code-body">
+							<span class="c-cmd">git clone https://github.com/4DRIAN0RTIZ/autoCover.git</span><br />
+							<span class="c-cmd">cd autoCover</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="step">
+				<div class="step-num">02</div>
+				<div class="step-content">
+					<h3>Install in editable mode</h3>
+					<p>Pulls in <a href="https://pillow.readthedocs.io/" target="_blank" rel="noopener">Pillow</a> and
+						registers the <code>autocover</code> command on your PATH.</p>
+					<div class="code-block">
+						<div class="code-header">
+							<span class="code-lang">bash</span>
+							<span>terminal</span>
+						</div>
+						<div class="code-body">
+							<span class="c-cmd">pip install -e .</span>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="step">
+				<div class="step-num">03</div>
+				<div class="step-content">
+					<h3>Generate your first cover</h3>
+					<p>Run it with a title, subtitle, and footer.</p>
+					<div class="code-block">
+						<div class="code-header">
+							<span class="code-lang">bash</span>
+							<span>terminal</span>
+						</div>
+						<div class="code-body">
+							<span class="c-cmd">autocover</span> \<br />
+							&nbsp;&nbsp;<span class="c-flag">--title</span> <span class="c-str">"TITLE"</span> \<br />
+							&nbsp;&nbsp;<span class="c-flag">--subtitle</span> <span class="c-str">"Subtitle"</span> \<br />
+							&nbsp;&nbsp;<span class="c-flag">--footer</span> <span class="c-str">"myblog.com"</span> \<br />
+							&nbsp;&nbsp;<span class="c-flag">--output</span> <span class="c-str">cover.webp</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="callout callout-info" style="margin-top:1.5rem;">
+			<span class="callout-icon" aria-hidden="true"><i class="fa-solid fa-circle-info"></i></span>
+			<p>A PyPI package (<code>pip install autocover</code>) is planned; until then, editable install from
+				source is the supported path.</p>
+		</div>
+	</section>
+
+	<hr class="divider" />
+
+	<!-- ══════════════════════════════ USAGE ══════════════════════════════ -->
+	<section id="usage">
+		<div class="section-label">// usage</div>
+		<h2>From solid backgrounds to full compositions</h2>
+		<p>Every example below produces a finished cover image in one command.</p>
+
+		<div class="code-block">
+			<div class="code-header">
+				<span class="code-lang">bash</span>
+				<span>Solid background</span>
+			</div>
+			<div class="code-body">
+				<span class="c-cmd">autocover</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--title</span> <span class="c-str">"DOMINA TUS COMMITS"</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--subtitle</span> <span class="c-str">"METODOLOGÍA CONVENTIONAL COMMITS"</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--footer</span> <span class="c-str">"myblog.com"</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--output</span> <span class="c-str">cover.png</span>
+			</div>
+		</div>
+
+		<div class="code-block">
+			<div class="code-header">
+				<span class="code-lang">bash</span>
+				<span>Gradient background</span>
+			</div>
+			<div class="code-body">
+				<span class="c-cmd">autocover</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--title</span> <span class="c-str">"Mi Título"</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--subtitle</span> <span class="c-str">"Mi Subtítulo"</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--footer</span> <span class="c-str">"myblog.com"</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--gradient</span> <span class="c-str">"#111111,#ff7f00"</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--gradient-direction</span> <span class="c-str">vertical</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--text-color</span> <span class="c-str">"#ffffff"</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--output</span> <span class="c-str">cover.png</span>
+			</div>
+		</div>
+
+		<div class="code-block">
+			<div class="code-header">
+				<span class="code-lang">bash</span>
+				<span>Background image + overlay</span>
+			</div>
+			<div class="code-body">
+				<span class="c-cmd">autocover</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--title</span> <span class="c-str">"Mi Título"</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--background</span> <span class="c-str">assets/backgrounds/bg.png</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--overlay</span> <span class="c-num">0.6</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--output</span> <span class="c-str">cover.png</span>
+			</div>
+		</div>
+
+		<details class="code-details" open>
+			<summary><i class="fa-solid fa-play summary-icon" aria-hidden="true"></i> Full example: boxes, logo, custom
+				font</summary>
+			<div class="code-body" style="padding:1.25rem 1.5rem;">
+				<span class="c-cmd">autocover</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--title</span> <span class="c-str">"NOMADA DIGITAL"</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--subtitle</span> <span class="c-str">"LLEVA TU HOME A TODAS PARTES"</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--footer</span> <span class="c-str">"myblog.com"</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--background</span> <span class="c-str">assets/backgrounds/bg.png</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--logo</span> <span class="c-str">assets/logos/logo.png</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--logo-position</span> <span class="c-str">bottom-left</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--font</span> <span class="c-str">assets/fonts/MyFont.ttf</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--text-color</span> <span class="c-str">"#ff7f00"</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--box</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--box-fill</span> <span class="c-str">"#00000080"</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--box-border</span> <span class="c-str">"#ff7f00"</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--box-border-width</span> <span class="c-num">4</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--box-radius</span> <span class="c-num">55</span> \<br />
+				&nbsp;&nbsp;<span class="c-flag">--output</span> <span class="c-str">cover.webp</span>
+			</div>
+		</details>
+
+		<details class="code-details">
+			<summary><i class="fa-solid fa-terminal summary-icon" aria-hidden="true"></i> Reusable shell alias</summary>
+			<div class="code-body" style="padding:1.25rem 1.5rem;">
+				<span class="c-comment"># ~/.bashrc or ~/.zshrc</span><br />
+				<span class="c-cmd">alias blogcover=</span><span class="c-str">'autocover \</span><br />
+				&nbsp;&nbsp;<span class="c-str">--background ~/autoCover/assets/backgrounds/default_bg.png \</span><br />
+				&nbsp;&nbsp;<span class="c-str">--logo ~/autoCover/assets/logos/my_logo.png \</span><br />
+				&nbsp;&nbsp;<span class="c-str">--logo-position bottom-left \</span><br />
+				&nbsp;&nbsp;<span class="c-str">--text-color "#ff7f00" \</span><br />
+				&nbsp;&nbsp;<span class="c-str">--box --box-fill "#00000080" \</span><br />
+				&nbsp;&nbsp;<span class="c-str">--box-border "#ff7f00" --box-border-width 4 \</span><br />
+				&nbsp;&nbsp;<span class="c-str">--footer "myblog.com"'</span><br />
+				<br />
+				<span class="c-comment"># then just</span><br />
+				<span class="c-cmd">blogcover</span> <span class="c-flag">--title</span> <span class="c-str">"My New Post"</span> <span class="c-flag">--subtitle</span> <span class="c-str">"Post description"</span>
+			</div>
+		</details>
+
+		<p style="margin-top:1.5rem;">More examples, including logo positioning and color-format reference, live in
+			<a href="https://github.com/4DRIAN0RTIZ/autoCover/blob/main/USAGE_EXAMPLES.md" target="_blank"
+				rel="noopener"><code>USAGE_EXAMPLES.md</code></a>.
+		</p>
+	</section>
+
+	<hr class="divider" />
+
+	<!-- ══════════════════════════════ OPTIONS ══════════════════════════════ -->
+	<section id="options">
+		<div class="section-label">// reference</div>
+		<h2>CLI options</h2>
+		<p>Every flag accepted by <code>autocover</code>, grouped by what it controls.</p>
+
+		<h3 style="margin-bottom:1rem;">Text</h3>
+		<table>
+			<thead>
+				<tr><th style="width:22%;">Option</th><th style="width:15%;">Default</th><th>Description</th></tr>
+			</thead>
+			<tbody>
+				<tr><td><code>--title</code></td><td>—</td><td>Main title (top)</td></tr>
+				<tr><td><code>--subtitle</code></td><td>—</td><td>Subtitle (center)</td></tr>
+				<tr><td><code>--footer</code></td><td>—</td><td>Footer text (bottom)</td></tr>
+				<tr><td><code>--text-color</code></td><td><code>#ff7f00</code></td><td>Text color (hex)</td></tr>
+				<tr><td><code>--font</code></td><td>system font</td><td>Path to TTF/OTF font file</td></tr>
+				<tr><td><code>--font-size-title</code></td><td>auto</td><td>Title font size</td></tr>
+				<tr><td><code>--font-size-subtitle</code></td><td>auto</td><td>Subtitle font size</td></tr>
+				<tr><td><code>--font-size-footer</code></td><td>auto</td><td>Footer font size</td></tr>
+				<tr><td><code>--title-max-lines</code></td><td><code>1</code></td><td>Max lines before wrapping title</td></tr>
+				<tr><td><code>--subtitle-max-lines</code></td><td><code>3</code></td><td>Max lines before wrapping subtitle</td></tr>
+				<tr><td><code>--no-shadow</code></td><td>off</td><td>Disable text shadow</td></tr>
+			</tbody>
+		</table>
+
+		<h3 style="margin-bottom:1rem;">Background</h3>
+		<table>
+			<thead>
+				<tr><th style="width:22%;">Option</th><th style="width:15%;">Default</th><th>Description</th></tr>
+			</thead>
+			<tbody>
+				<tr><td><code>--bg-color</code></td><td><code>#111111</code></td><td>Solid background color (hex)</td></tr>
+				<tr><td><code>--gradient</code></td><td>—</td><td>Gradient <code>start,end</code> (e.g. <code>"#111111,#ff7f00"</code>)</td></tr>
+				<tr><td><code>--gradient-direction</code></td><td><code>vertical</code></td><td><code>vertical</code> or <code>horizontal</code></td></tr>
+				<tr><td><code>--background</code></td><td>—</td><td>Path to background image</td></tr>
+				<tr><td><code>--overlay</code></td><td>—</td><td>Overlay opacity <code>0.0–1.0</code> (requires <code>--background</code>)</td></tr>
+				<tr><td><code>--overlay-color</code></td><td><code>#000000</code></td><td>Overlay color (hex)</td></tr>
+			</tbody>
+		</table>
+
+		<h3 style="margin-bottom:1rem;">Text boxes</h3>
+		<table>
+			<thead>
+				<tr><th style="width:22%;">Option</th><th style="width:15%;">Default</th><th>Description</th></tr>
+			</thead>
+			<tbody>
+				<tr><td><code>--box</code></td><td>off</td><td>Enable rounded text boxes</td></tr>
+				<tr><td><code>--box-fill</code></td><td>—</td><td>Box background color with alpha (<code>#RRGGBBAA</code>)</td></tr>
+				<tr><td><code>--box-border</code></td><td><code>#ff7f00</code></td><td>Box border color (hex)</td></tr>
+				<tr><td><code>--box-border-width</code></td><td><code>3</code></td><td>Border width in pixels</td></tr>
+				<tr><td><code>--box-padding</code></td><td><code>30</code></td><td>Padding in pixels</td></tr>
+				<tr><td><code>--box-radius</code></td><td><code>20</code></td><td>Corner radius in pixels</td></tr>
+			</tbody>
+		</table>
+
+		<h3 style="margin-bottom:1rem;">Logo</h3>
+		<table>
+			<thead>
+				<tr><th style="width:22%;">Option</th><th style="width:15%;">Default</th><th>Description</th></tr>
+			</thead>
+			<tbody>
+				<tr><td><code>--logo</code></td><td>—</td><td>Path to logo image</td></tr>
+				<tr><td><code>--logo-size</code></td><td><code>100</code></td><td>Logo size in pixels</td></tr>
+				<tr><td><code>--logo-position</code></td><td><code>top-right</code></td><td><code>top-right</code>, <code>top-left</code>, <code>bottom-right</code>, <code>bottom-left</code></td></tr>
+			</tbody>
+		</table>
+
+		<h3 style="margin-bottom:1rem;">Output</h3>
+		<table>
+			<thead>
+				<tr><th style="width:22%;">Option</th><th style="width:15%;">Default</th><th>Description</th></tr>
+			</thead>
+			<tbody>
+				<tr><td><code>--output</code>, <code>-o</code></td><td><code>cover.png</code></td><td>Output path (<code>.png</code>, <code>.webp</code>, <code>.jpg</code>)</td></tr>
+				<tr><td><code>--width</code></td><td><code>1280</code></td><td>Image width in pixels</td></tr>
+				<tr><td><code>--height</code></td><td><code>720</code></td><td>Image height in pixels</td></tr>
+			</tbody>
+		</table>
+
+		<div class="callout callout-info">
+			<span class="callout-icon" aria-hidden="true"><i class="fa-solid fa-palette"></i></span>
+			<p>Colors are hex: opaque as <code>#RRGGBB</code> (e.g. <code>#ff7f00</code>), with alpha only for
+				<code>--box-fill</code> as <code>#RRGGBBAA</code> (e.g. <code>#00000080</code> = 50% transparent
+				black). Alpha reference: <code>FF</code>=100% · <code>BF</code>=75% · <code>80</code>=50% ·
+				<code>40</code>=25%.
+			</p>
+		</div>
+	</section>
+
+	<hr class="divider" />
+
+	<!-- ══════════════════════════════ CHANGELOG ══════════════════════════════ -->
+	<section id="changelog">
+		<div class="section-label">// changelog</div>
+		<h2>Version history</h2>
+
+		<div id="changelog-content" style="margin-top: 1.5rem;">
+			<p class="changelog-empty">Loading changelog…</p>
+		</div>
+
+		<div class="callout callout-info" style="margin-top:1.5rem;">
+			<span class="callout-icon" aria-hidden="true"><i class="fa-solid fa-file-lines"></i></span>
+			<p><span>Full history: </span><a
+					href="https://github.com/4DRIAN0RTIZ/autoCover/blob/main/CHANGELOG.md" target="_blank"
+					rel="noopener">CHANGELOG.md</a></p>
+		</div>
+	</section>
+
+	<hr class="divider" />
+
+	<!-- ══════════════════════════════ FOOTER ══════════════════════════════ -->
+	<footer>
+		<div class="footer-brand">{ autoCover }</div>
+		<p>
+			Created by <a href="https://github.com/4DRIAN0RTIZ" target="_blank" rel="noopener">4DRIAN0RTIZ</a> ·
+			<a href="https://github.com/4DRIAN0RTIZ/autoCover" target="_blank" rel="noopener">GitHub</a>
+		</p>
+		<p style="margin-top:.5rem; font-size:.78rem;">Cover images, from the terminal.</p>
+		<p id="footer-updated" style="margin-top:.5rem; font-size:.78rem;"></p>
+	</footer>
+
+	<script src="script.js"></script>
+
+</body>
+
+</html>

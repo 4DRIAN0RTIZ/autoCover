@@ -1,6 +1,7 @@
-from PIL import Image, ImageDraw, ImageFont, ImageFilter
-from typing import Optional, Tuple
 import os
+from typing import Optional, Tuple
+
+from PIL import Image, ImageDraw
 
 
 class CoverGenerator:

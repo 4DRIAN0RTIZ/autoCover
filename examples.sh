@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # Basic example
-python autocover.py \
+python -m autocover.cli \
   --title "DOMINA TUS COMMITS" \
   --subtitle "METODOLOGÍA CONVENTIONAL COMMITS" \
   --footer "cuevaneander.tech/blog" \
   --output examples/example1.png
 
 # With gradient
-python autocover.py \
+python -m autocover.cli \
   --title "Python Tips & Tricks" \
   --subtitle "Improve Your Code Quality" \
   --footer "cuevaneander.tech/blog" \
@@ -17,7 +17,7 @@ python autocover.py \
   --output examples/example2.png
 
 # With custom colors
-python autocover.py \
+python -m autocover.cli \
   --title "Web Development" \
   --subtitle "Modern JavaScript Framework" \
   --footer "cuevaneander.tech/blog" \
@@ -26,7 +26,7 @@ python autocover.py \
   --output examples/example3.png
 
 # Horizontal gradient
-python autocover.py \
+python -m autocover.cli \
   --title "Machine Learning" \
   --subtitle "Deep Learning Fundamentals" \
   --footer "cuevaneander.tech/blog" \

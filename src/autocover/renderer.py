@@ -1,6 +1,7 @@
-from PIL import Image, ImageDraw, ImageFont
-from typing import Optional, Tuple
 import os
+from typing import Optional, Tuple
+
+from PIL import Image, ImageDraw, ImageFont
 
 
 class TextRenderer:
@@ -12,7 +13,8 @@ class TextRenderer:
         "footer": 48
     }
 
-    def __init__(self, draw: ImageDraw.Draw, image_width: int, image_height: int, image: Optional[Image.Image] = None):
+    def __init__(self, draw: ImageDraw.Draw, image_width: int, image_height: int,
+                 image: Optional[Image.Image] = None):
         self.draw = draw
         self.image_width = image_width
         self.image_height = image_height
@@ -59,7 +61,8 @@ class TextRenderer:
         max_width = min(int(self.image_width * max_width_ratio), avail_width)
 
         if box:
-            max_width = min(int(self.image_width * max_width_ratio), avail_width) - (box_padding * 2)
+            max_width = (min(int(self.image_width * max_width_ratio), avail_width)
+                         - (box_padding * 2))
 
         # Intelligent sizing: try single line first, wrap only if font would shrink too much
         if text_type != "footer":
@@ -80,7 +83,9 @@ class TextRenderer:
                 font_size = single_size
                 lines = [text]
         else:
-            font, font_size = self._fit_text_to_width(text, font, font_path, font_size, max_width, text_type)
+            font, font_size = self._fit_text_to_width(
+                text, font, font_path, font_size, max_width, text_type
+            )
             lines = [text]
 
         line_bboxes = [self.draw.textbbox((0, 0), line, font=font) for line in lines]
@@ -91,12 +96,12 @@ class TextRenderer:
         max_line_width = max(line_widths)
 
         if len(lines) == 1:
-            x, y = self._calculate_position(position, line_widths[0], line_heights[0], text_type, y_start,
-                                            avail_x1, avail_x2)
+            x, y = self._calculate_position(position, line_widths[0], line_heights[0], text_type,
+                                            y_start, avail_x1, avail_x2)
         else:
             x = avail_x1 + (avail_width - max_line_width) // 2
-            _, y = self._calculate_position(position, max_line_width, total_height, text_type, y_start,
-                                            avail_x1, avail_x2)
+            _, y = self._calculate_position(position, max_line_width, total_height, text_type,
+                                            y_start, avail_x1, avail_x2)
 
         # Ensure a visible gap between stacked elements when both have boxes
         if box and y_start is not None:
@@ -163,7 +168,8 @@ class TextRenderer:
             return y + total_height + box_padding
         return y + total_height
 
-    def _load_font(self, font_path: Optional[str], size: int, text_type: str = "title") -> ImageFont.FreeTypeFont:
+    def _load_font(self, font_path: Optional[str], size: int,
+                   text_type: str = "title") -> ImageFont.FreeTypeFont:
         """Load font or fallback to default"""
         if text_type == "footer":
             default_fonts = [
@@ -203,7 +209,8 @@ class TextRenderer:
 
     def _fit_text_to_width(self, text: str, font: ImageFont.FreeTypeFont,
                           font_path: Optional[str], font_size: int,
-                          max_width: int, text_type: str = "title") -> Tuple[ImageFont.FreeTypeFont, int]:
+                          max_width: int,
+                          text_type: str = "title") -> Tuple[ImageFont.FreeTypeFont, int]:
         """Adjust font size to fit text within max width"""
 
         bbox = self.draw.textbbox((0, 0), text, font=font)
@@ -238,7 +245,7 @@ class TextRenderer:
         lines = self._wrap_text_to_lines(text, font, max_width)
 
         while font_size > 20:
-            line_bboxes = [self.draw.textbbox((0, 0), l, font=font) for l in lines]
+            line_bboxes = [self.draw.textbbox((0, 0), ln, font=font) for ln in lines]
             line_heights = [bb[3] - bb[1] for bb in line_bboxes]
             line_widths = [bb[2] - bb[0] for bb in line_bboxes]
             line_spacing = max(4, font_size // 10)

@@ -1,13 +1,11 @@
-#!/usr/bin/env python3
-"""
-autoCover - Generate beautiful blog cover images from the command line
-"""
+"""Command-line interface for autoCover."""
 
 import argparse
-import sys
 import os
-from image_generator import CoverGenerator
-from text_renderer import TextRenderer
+import sys
+
+from .core import CoverGenerator
+from .renderer import TextRenderer
 
 
 def parse_arguments():
@@ -67,10 +65,12 @@ Examples:
     parser.add_argument("--max-width-ratio", type=float, default=0.9,
                        help="Max text area width as ratio of image width (default: 0.9)")
     parser.add_argument("--logo-gap", type=int, default=30,
-                       help="Gap in pixels between logo and text area when avoiding overlap (default: 30)")
+                       help="Gap in pixels between logo and text area when avoiding "
+                            "overlap (default: 30)")
     parser.add_argument("--logo-avoid-min-ratio", type=float, default=0.4,
-                       help="Minimum allowed text area width (as ratio of image width) when dodging the logo, "
-                            "below which avoidance is skipped (default: 0.4)")
+                       help="Minimum allowed text area width (as ratio of image width) "
+                            "when dodging the logo, below which avoidance is skipped "
+                            "(default: 0.4)")
 
     parser.add_argument("--box", action="store_true",
                        help="Enable text boxes with rounded borders")

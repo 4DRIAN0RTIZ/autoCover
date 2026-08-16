@@ -5,7 +5,7 @@
 # - Background image in assets/backgrounds/
 # - Logo in assets/logos/
 
-python autocover.py \
+python -m autocover.cli \
   --title "Auth Bypass" \
   --subtitle "asi entro un minero a mi servidor" \
   --footer "https://cuevaneander.tech/blog" \

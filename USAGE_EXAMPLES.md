@@ -5,7 +5,7 @@
 ### Simple Cover with Solid Background
 
 ```bash
-python autocover.py \
+python -m autocover.cli \
   --title "My Blog Post" \
   --subtitle "A detailed guide" \
   --footer "myblog.com" \
@@ -15,7 +15,7 @@ python autocover.py \
 ### Cover with Gradient Background
 
 ```bash
-python autocover.py \
+python -m autocover.cli \
   --title "Python Tips" \
   --subtitle "Advanced Techniques" \
   --gradient "#1a1a2e,#16213e" \
@@ -28,7 +28,7 @@ python autocover.py \
 ### Cover with Rounded Boxes (Like Target Design)
 
 ```bash
-python autocover.py \
+python -m autocover.cli \
   --title "NOMADA DIGITAL" \
   --subtitle "LLEVA TU HOME A TODAS PARTES" \
   --footer "https://cuevaneander.tech/blog" \
@@ -76,7 +76,7 @@ python autocover.py \
 ## Custom Fonts
 
 ```bash
-python autocover.py \
+python -m autocover.cli \
   --title "Typography Matters" \
   --font assets/fonts/GeistMono-Medium.ttf \
   --font-size-title 90 \
@@ -86,7 +86,7 @@ python autocover.py \
 ## Background Images with Overlay
 
 ```bash
-python autocover.py \
+python -m autocover.cli \
   --title "Beautiful Backgrounds" \
   --background assets/backgrounds/photo.jpg \
   --overlay 0.6 \
@@ -105,7 +105,7 @@ The `--overlay` parameter adds a semi-transparent layer over the background:
 Create a shell alias in your `~/.bashrc` or `~/.zshrc`:
 
 ```bash
-alias blogcover='python ~/autoCover/autocover.py \
+alias blogcover='python -m autocover.cli \
   --background ~/autoCover/assets/backgrounds/default_bg.png \
   --logo ~/autoCover/assets/logos/my_logo.png \
   --logo-position bottom-left \

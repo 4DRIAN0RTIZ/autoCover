@@ -12,19 +12,21 @@ Generate blog cover images (OG images) from the command line.
 ## Installation
 
 ```bash
-pip install -r requirements.txt
+pip install -e .
 ```
+
+This installs the `autocover` command. Dependencies are declared in `pyproject.toml`.
 
 ## Usage
 
 ```bash
-python autocover.py --title "TITLE" --subtitle "Subtitle" --footer "myblog.com" --output cover.webp
+autocover --title "TITLE" --subtitle "Subtitle" --footer "myblog.com" --output cover.webp
 ```
 
 ### Solid background
 
 ```bash
-python autocover.py \
+autocover \
   --title "DOMINA TUS COMMITS" \
   --subtitle "METODOLOGÍA CONVENTIONAL COMMITS" \
   --footer "myblog.com" \
@@ -34,7 +36,7 @@ python autocover.py \
 ### Gradient background
 
 ```bash
-python autocover.py \
+autocover \
   --title "Mi Título" \
   --subtitle "Mi Subtítulo" \
   --footer "myblog.com" \
@@ -47,7 +49,7 @@ python autocover.py \
 ### Background image + overlay
 
 ```bash
-python autocover.py \
+autocover \
   --title "Mi Título" \
   --background assets/backgrounds/bg.png \
   --overlay 0.6 \
@@ -57,7 +59,7 @@ python autocover.py \
 ### Full example with boxes and logo
 
 ```bash
-python autocover.py \
+autocover \
   --title "NOMADA DIGITAL" \
   --subtitle "LLEVA TU HOME A TODAS PARTES" \
   --footer "myblog.com" \
