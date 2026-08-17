@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## [0.2.1] - 2026-08-17
+
+### CI
+
+- Add release and changelog workflows ([130e9dc](https://github.com/4DRIAN0RTIZ/autoCover/commit/130e9dc8080156964c891183d83a169534d31d89))
+
 ## [0.2.0] - 2026-08-17
 
 ### Features
