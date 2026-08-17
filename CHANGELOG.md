@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## [0.2.0] - 2026-08-17
+
+### Features
+
+- Expose cover generation through MCP server ([ce7ceca](https://github.com/4DRIAN0RTIZ/autoCover/commit/ce7cecae90035057170a15ca2c42bab03f6dd6a3))
+
 ## [0.1.0] - 2026-08-17
 
 ### Features
