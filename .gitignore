@@ -5,6 +5,7 @@ __pycache__/
 *.jpeg
 !assets/**/*.png
 !assets/**/*.jpg
+!docs/**/*.png
 .venv/
 venv/
 *.egg-info/
@@ -13,3 +14,4 @@ build/
 .atl/
 .pytest_cache/
 .ruff_cache/
+release.sh

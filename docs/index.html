@@ -9,21 +9,25 @@
 		content="Generate blog cover (OG) images from the command line: solid/gradient/image backgrounds, rounded text boxes, logo placement, custom fonts, PNG/WebP/JPG output." />
 
 	<!-- Open Graph / Social Media -->
-	<!-- No dedicated docs domain or og-image yet: adjust these once GitHub Pages / a custom domain is configured -->
 	<meta property="og:title" content="autoCover — Blog cover images from the terminal" />
 	<meta property="og:description"
 		content="Generate blog cover (OG) images from the command line: solid/gradient/image backgrounds, rounded text boxes, logo placement, custom fonts." />
-	<meta property="og:url" content="https://github.com/4DRIAN0RTIZ/autoCover" />
+	<meta property="og:url" content="https://autocover.cuevaneander.tech" />
+	<meta property="og:image" content="https://autocover.cuevaneander.tech/og-image.webp" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
 	<meta property="og:type" content="website" />
 	<meta property="og:locale" content="en_US" />
 
 	<!-- Twitter -->
-	<meta name="twitter:card" content="summary" />
+	<meta name="twitter:card" content="summary_large_image" />
 	<meta name="twitter:title" content="autoCover — Blog cover images from the terminal" />
 	<meta name="twitter:description"
 		content="Generate blog cover (OG) images from the command line: solid/gradient/image backgrounds, rounded text boxes, logo placement, custom fonts." />
+	<meta name="twitter:image" content="https://autocover.cuevaneander.tech/og-image.webp" />
 
-	<!-- No favicon shipped in assets/ yet; omitted rather than borrowing another project's icon -->
+	<link rel="icon" href="favicon.ico" sizes="any" />
+	<link rel="apple-touch-icon" href="apple-touch-icon.png" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
 	<link rel="stylesheet" href="styles.css" />
 </head>
@@ -32,7 +36,7 @@
 
 	<!-- ══════════════════════════════ NAV ══════════════════════════════ -->
 	<nav>
-		<a href="#" class="nav-brand">{ <span>auto</span>Cover }</a>
+		<a href="#" class="nav-brand"><img src="icon.png" alt="" width="24" height="24" /> <span>auto</span>Cover</a>
 		<ul class="nav-links">
 			<li><a href="#features">Features</a></li>
 			<li><a href="#installation">Installation</a></li>
@@ -328,10 +332,32 @@
 			</div>
 		</details>
 
-		<p style="margin-top:1.5rem;">More examples, including logo positioning and color-format reference, live in
-			<a href="https://github.com/4DRIAN0RTIZ/autoCover/blob/main/USAGE_EXAMPLES.md" target="_blank"
-				rel="noopener"><code>USAGE_EXAMPLES.md</code></a>.
-		</p>
+		<details class="code-details">
+			<summary><i class="fa-solid fa-arrows-up-down-left-right summary-icon" aria-hidden="true"></i> Logo
+				positioning</summary>
+			<div class="code-body" style="padding:1.25rem 1.5rem;">
+				<span class="c-flag">--logo-position</span> <span class="c-str">top-right</span>
+				<span class="c-comment"># default</span><br />
+				<span class="c-flag">--logo-position</span> <span class="c-str">top-left</span><br />
+				<span class="c-flag">--logo-position</span> <span class="c-str">bottom-right</span><br />
+				<span class="c-flag">--logo-position</span> <span class="c-str">bottom-left</span>
+			</div>
+		</details>
+
+		<details class="code-details">
+			<summary><i class="fa-solid fa-palette summary-icon" aria-hidden="true"></i> Color format
+				reference</summary>
+			<div class="code-body" style="padding:1.25rem 1.5rem;">
+				<span class="c-comment"># Opaque colors: #RRGGBB</span><br />
+				<span class="c-str">#ff7f00</span> <span class="c-comment"># orange</span><br />
+				<br />
+				<span class="c-comment"># --box-fill accepts alpha: #RRGGBBAA</span><br />
+				<span class="c-str">#00000080</span> <span class="c-comment"># black, 50% transparent</span><br />
+				<span class="c-str">#ff7f0040</span> <span class="c-comment"># orange, 25% transparent</span><br />
+				<br />
+				<span class="c-comment"># alpha reference: FF=100% · BF=75% · 80=50% · 40=25%</span>
+			</div>
+		</details>
 	</section>
 
 	<hr class="divider" />
