@@ -21,9 +21,13 @@ dev = [
     "pytest",
     "ruff",
 ]
+mcp = [
+    "mcp>=1.0.0,<2.0.0",
+]
 
 [project.scripts]
 autocover = "autocover.cli:main"
+autocover-mcp = "autocover.mcp_server:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/autocover"]

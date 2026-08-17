@@ -97,110 +97,122 @@ Examples:
     return parser.parse_args()
 
 
+def generate_cover(*, title=None, subtitle=None, footer=None, output="cover.png",
+                    width=1280, height=720, bg_color="#111111", gradient=None,
+                    gradient_direction="vertical", background=None, overlay=None,
+                    overlay_color="#000000", text_color="#ff7f00", font=None,
+                    font_size_title=None, font_size_subtitle=None, font_size_footer=None,
+                    title_max_lines=1, subtitle_max_lines=3, no_shadow=False,
+                    max_width_ratio=0.9, logo_gap=30, logo_avoid_min_ratio=0.4,
+                    box=False, box_fill=None, box_border="#ff7f00", box_border_width=3,
+                    box_padding=30, box_radius=20, logo=None, logo_size=100,
+                    logo_position="top-right"):
+    """Generate a cover image and return the output path.
+
+    Same parameters as the CLI flags. Raises ValueError on bad input.
+    """
+    if not any([title, subtitle, footer]):
+        raise ValueError("At least one of title, subtitle, or footer is required")
+
+    generator = CoverGenerator(width=width, height=height)
+
+    if background:
+        if not os.path.exists(background):
+            raise ValueError(f"Background image not found: {background}")
+        generator.load_background(background)
+        if overlay is not None:
+            generator.add_overlay(overlay_color, overlay)
+    elif gradient:
+        colors = gradient.split(",")
+        if len(colors) != 2:
+            raise ValueError("Gradient requires exactly 2 colors separated by comma")
+        generator.create_gradient(colors[0].strip(), colors[1].strip(), gradient_direction)
+    else:
+        generator.create_base(bg_color)
+
+    logo_rect = None
+    if logo:
+        if not os.path.exists(logo):
+            print(f"Warning: Logo file not found: {logo}")
+        else:
+            logo_rect = generator.add_logo(logo, logo_size, logo_position)
+
+    renderer = TextRenderer(generator.draw, generator.width, generator.height, generator.image)
+
+    shadow_enabled = not no_shadow
+
+    title_bottom = None
+    if title:
+        title_bottom = renderer.draw_text(title, "north",
+                         font_path=font,
+                         font_size=font_size_title,
+                         color=text_color,
+                         text_type="title",
+                         shadow=shadow_enabled,
+                         max_lines=title_max_lines,
+                         box=box,
+                         box_fill=box_fill,
+                         box_border=box_border if box else None,
+                         box_border_width=box_border_width,
+                         box_padding=box_padding,
+                         box_radius=box_radius,
+                         avoid_rect=logo_rect,
+                         max_width_ratio=max_width_ratio,
+                         logo_gap=logo_gap,
+                         logo_avoid_min_ratio=logo_avoid_min_ratio)
+
+    if subtitle:
+        renderer.draw_text(subtitle, "center",
+                         font_path=font,
+                         font_size=font_size_subtitle,
+                         color=text_color,
+                         text_type="subtitle",
+                         shadow=shadow_enabled,
+                         max_lines=subtitle_max_lines,
+                         y_start=title_bottom,
+                         box=box,
+                         box_fill=box_fill,
+                         box_border=box_border if box else None,
+                         box_border_width=box_border_width,
+                         box_padding=box_padding,
+                         box_radius=box_radius,
+                         avoid_rect=logo_rect,
+                         max_width_ratio=max_width_ratio,
+                         logo_gap=logo_gap,
+                         logo_avoid_min_ratio=logo_avoid_min_ratio)
+
+    if footer:
+        renderer.draw_text(footer, "south",
+                         font_path=font,
+                         font_size=font_size_footer,
+                         color=text_color,
+                         text_type="footer",
+                         shadow=shadow_enabled,
+                         box=box,
+                         box_fill=box_fill,
+                         box_border=box_border if box else None,
+                         box_border_width=box_border_width,
+                         box_padding=box_padding,
+                         box_radius=box_radius,
+                         avoid_rect=logo_rect,
+                         max_width_ratio=max_width_ratio,
+                         logo_gap=logo_gap,
+                         logo_avoid_min_ratio=logo_avoid_min_ratio)
+
+    generator.save(output)
+    return output
+
+
 def main():
     """Main execution function"""
     args = parse_arguments()
 
-    if not any([args.title, args.subtitle, args.footer]):
-        print("Error: At least one of --title, --subtitle, or --footer is required")
-        sys.exit(1)
-
     try:
-        generator = CoverGenerator(width=args.width, height=args.height)
-
-        if args.background:
-            if not os.path.exists(args.background):
-                print(f"Error: Background image not found: {args.background}")
-                sys.exit(1)
-            generator.load_background(args.background)
-            if args.overlay is not None:
-                generator.add_overlay(args.overlay_color, args.overlay)
-        elif args.gradient:
-            try:
-                colors = args.gradient.split(",")
-                if len(colors) != 2:
-                    print("Error: Gradient requires exactly 2 colors separated by comma")
-                    sys.exit(1)
-                generator.create_gradient(colors[0].strip(), colors[1].strip(),
-                                        args.gradient_direction)
-            except Exception as e:
-                print(f"Error creating gradient: {e}")
-                sys.exit(1)
-        else:
-            generator.create_base(args.bg_color)
-
-        logo_rect = None
-        if args.logo:
-            if not os.path.exists(args.logo):
-                print(f"Warning: Logo file not found: {args.logo}")
-            else:
-                logo_rect = generator.add_logo(args.logo, args.logo_size, args.logo_position)
-
-        renderer = TextRenderer(generator.draw, generator.width, generator.height, generator.image)
-
-        shadow_enabled = not args.no_shadow
-
-        title_bottom = None
-        if args.title:
-            title_bottom = renderer.draw_text(args.title, "north",
-                             font_path=args.font,
-                             font_size=args.font_size_title,
-                             color=args.text_color,
-                             text_type="title",
-                             shadow=shadow_enabled,
-                             max_lines=args.title_max_lines,
-                             box=args.box,
-                             box_fill=args.box_fill,
-                             box_border=args.box_border if args.box else None,
-                             box_border_width=args.box_border_width,
-                             box_padding=args.box_padding,
-                             box_radius=args.box_radius,
-                             avoid_rect=logo_rect,
-                             max_width_ratio=args.max_width_ratio,
-                             logo_gap=args.logo_gap,
-                             logo_avoid_min_ratio=args.logo_avoid_min_ratio)
-
-        if args.subtitle:
-            renderer.draw_text(args.subtitle, "center",
-                             font_path=args.font,
-                             font_size=args.font_size_subtitle,
-                             color=args.text_color,
-                             text_type="subtitle",
-                             shadow=shadow_enabled,
-                             max_lines=args.subtitle_max_lines,
-                             y_start=title_bottom,
-                             box=args.box,
-                             box_fill=args.box_fill,
-                             box_border=args.box_border if args.box else None,
-                             box_border_width=args.box_border_width,
-                             box_padding=args.box_padding,
-                             box_radius=args.box_radius,
-                             avoid_rect=logo_rect,
-                             max_width_ratio=args.max_width_ratio,
-                             logo_gap=args.logo_gap,
-                             logo_avoid_min_ratio=args.logo_avoid_min_ratio)
-
-        if args.footer:
-            renderer.draw_text(args.footer, "south",
-                             font_path=args.font,
-                             font_size=args.font_size_footer,
-                             color=args.text_color,
-                             text_type="footer",
-                             shadow=shadow_enabled,
-                             box=args.box,
-                             box_fill=args.box_fill,
-                             box_border=args.box_border if args.box else None,
-                             box_border_width=args.box_border_width,
-                             box_padding=args.box_padding,
-                             box_radius=args.box_radius,
-                             avoid_rect=logo_rect,
-                             max_width_ratio=args.max_width_ratio,
-                             logo_gap=args.logo_gap,
-                             logo_avoid_min_ratio=args.logo_avoid_min_ratio)
-
-        generator.save(args.output)
-        print(f"Cover image generated: {args.output}")
-
+        output = generate_cover(**vars(args))
+        print(f"Cover image generated: {output}")
+    except ValueError as e:
+        print(f"Error: {e}")
+        sys.exit(1)
     except Exception as e:
         print(f"Error generating image: {e}")
         sys.exit(1)
