@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## [0.2.2] - 2026-08-17
+
+### CI
+
+- Fix concurrency race and scope bumped-version to unreleased ([832a418](https://github.com/4DRIAN0RTIZ/autoCover/commit/832a418e5781e7761f3ca8c136fc4669d6065711))
+
 ## [0.2.1] - 2026-08-17
 
 ### CI
