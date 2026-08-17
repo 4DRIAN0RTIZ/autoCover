@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## [0.2.3] - 2026-08-17
+
+### Bug Fixes
+
+- Pass --tag when generating docs/changelog.json ([6f51a9f](https://github.com/4DRIAN0RTIZ/autoCover/commit/6f51a9fa57d7b20f4afb43d13fea98040b8128e4))
+
 ## [0.2.2] - 2026-08-17
 
 ### CI
